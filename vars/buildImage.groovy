@@ -6,12 +6,12 @@
 //     return new Docker(this).buildDockerImage(imageName)
 // }
 
-def call() {
+def call(String imageName) {
     echo "building the docker image..."
     echo "${params.VERSION}"
     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh "docker build -t choyalpramod/demo-app:jma-${params.VERSION} ."
+        sh "docker build -t $imageName ."
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh "docker push choyalpramod/demo-app:jma-${params.VERSION}"
+        sh "docker push $imageName"
     }
 }
